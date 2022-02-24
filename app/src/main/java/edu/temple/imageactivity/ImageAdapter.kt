@@ -6,13 +6,26 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
-class ImageAdapter(_images: Array<ImageObject>{
-
+class ImageAdapter(_images: Array<ImageObject>, _diaplayRecyclerView: (ImageObject) -> Unit) : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
     val images = _images
+    val displayRecyclerView = _diaplayRecyclerView
+    inner class ImageViewHolder(_view: View) : RecyclerView.ViewHolder(_view){
+        val diaplayImageView: ImageView = _view.findViewById<ImageView>(R.id.displayImageView)
+        lateinit var imageObject: ImageObject
+        init {
+            _view.setOnClickListener{displayRecyclerView(imageObject)}
+        }
+    }
 
-    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.previewImageView.setImageResource(images[position].picture)
-        holder.imageObject = images[position]
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
+        val layout = LayoutInflater.from(parent.context)
+            .inflate(R.layout.recycler_view_layout, parent, false)
+        return ImageViewHolder(layout)
+    }
+
+    override fun onBindViewHolder(holder: ImageViewHolder, spot: Int) {
+        holder.diaplayImageView.setImageResource(images[spot].picture)
+        holder.imageObject = images[spot]
     }
 
     override fun getItemCount(): Int {

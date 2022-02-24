@@ -11,10 +11,8 @@ class ImageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val imageView = findViewById<ImageView>(R.id.imageView)
         val textView = findViewById<TextView>(R.id.textView)
-
         val images = arrayOf(
             ImageObject(R.drawable.watermelon, "Watermelon"),
             ImageObject(R.drawable.orange, "Orange"),
@@ -27,5 +25,14 @@ class ImageActivity : AppCompatActivity() {
             ImageObject(R.drawable.grape, "Grape"),
             ImageObject(R.drawable.banana, "Banana")
         )
+
+        val displayRecyclerView = {
+                imageObject:ImageObject -> imageView.setImageResource(imageObject.picture)
+                textView.text = imageObject.name
+        }
+
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        recyclerView.adapter = ImageAdapter(images, displayRecyclerView)
     }
 }
